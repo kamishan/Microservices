@@ -1,0 +1,34 @@
+version: '3'   # se establece la version de docker compose que se va a usar 
+services:
+
+  DBmySQL:
+    container_name: MySQL   
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password 
+    restart: always
+    environment: 
+      MYSQL_ROOT_PASSWORD: uno 
+    ports:
+      - "3306:3306"           
+
+      
+  redis:
+    container_name: redis
+    image: redis
+    ports: 
+      - "6379:6379"    
+  
+  aplic:
+    build: .
+
+    ports:
+      - "5000:5000"
+      
+    depends_on: 
+      - DBmySQL
+      - redis
+
+    links: 
+      - DBmySQL
+      - redis
+
